@@ -93,7 +93,8 @@ export class WaveSystem {
   /** 波次进度 0-1（用于进度条） */
   getProgress() {
     if (this.totalWaves === 0) return 1;
-    return Math.max(0, this.currentWave) / this.totalWaves;
+    if (this._state === 'complete') return 1;
+    return Math.max(0, this.currentWave + 1) / this.totalWaves;
   }
 
   isFlagWave() {

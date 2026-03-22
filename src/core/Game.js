@@ -11,12 +11,10 @@ import { HUD } from '../ui/HUD.js';
 import { SCREEN } from '../ui/Screens.js';
 // plant classes needed for dispatch logic
 import { Sunflower } from '../plants/Sunflower.js';
-import { Peashooter } from '../plants/Peashooter.js';
 import { CherryBomb } from '../plants/CherryBomb.js';
 // registries
 import { PLANT_REGISTRY } from '../plants/index.js';
 import { ZOMBIE_REGISTRY } from '../zombies/index.js';
-import { Projectile } from '../entities/Projectile.js';
 import { PLANTS } from '../data/plants.js';
 import { LEVELS } from '../data/levels.js';
 
@@ -317,12 +315,6 @@ export class Game {
         // Sunflower needs sunSystem directly to call spawnSunAt
         plant.update(dt, this.sunSystem);
 
-      } else if (plant instanceof Peashooter) {
-        // Peashooter uses the legacy zombiesInRow pattern
-        const zombiesInRow = this.zombies.filter(z => z.row === plant.row && z.isAlive());
-        const result = plant.update(dt, zombiesInRow);
-        if (result instanceof Projectile) this.projectiles.push(result);
-
       } else if (plant instanceof CherryBomb) {
         // CherryBomb returns explosion event object
         const result = plant.update(dt);
@@ -335,7 +327,7 @@ export class Game {
 
       } else {
         // All other plants use the context pattern:
-        // SnowPea, Repeater, Chomper, FumeShroom, PotatoMine, PuffShroom,
+        // Peashooter, SnowPea, Repeater, Chomper, FumeShroom, PotatoMine, PuffShroom,
         // SunShroom, Magneshroom, Torchwood, DoomShroom, TallNut, Lilypad, FlowerPot
         plant.update(dt, context);
       }

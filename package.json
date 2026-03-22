@@ -1,21 +1,30 @@
 {
   "name": "pvz-kimi",
   "version": "1.0.0",
-  "description": "",
+  "description": "植物大战僵尸网页游戏 — HTML5 Canvas + ES Modules",
+  "type": "module",
   "main": "index.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "python3 -m http.server 8080",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/195286381/pvz-kimi.git"
   },
-  "keywords": [],
+  "keywords": [
+    "game",
+    "html5",
+    "canvas",
+    "plants-vs-zombies",
+    "es-modules"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/195286381/pvz-kimi/issues"
   },

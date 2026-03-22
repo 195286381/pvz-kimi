@@ -1,6 +1,7 @@
 import { Plant } from '../entities/Plant.js';
 import { PLANTS } from '../data/plants.js';
 import { bus } from '../core/EventBus.js';
+import { Grid } from '../core/Grid.js';
 
 const CONFIG = PLANTS.potatomine;
 
@@ -30,7 +31,7 @@ export class PotatoMine extends Plant {
     const col = this.col;
     const stepped = context.zombies.find(z =>
       z.isAlive() && z.row === this.row &&
-      Math.floor((z.x - 120) / 80) === col
+      Math.floor((z.x - Grid.OFFSET_X) / Grid.CELL_W) === col
     );
     if (stepped) {
       this._detonate(context);

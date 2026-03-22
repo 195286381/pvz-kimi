@@ -1,5 +1,6 @@
 import { Plant } from '../entities/Plant.js';
 import { PLANTS } from '../data/plants.js';
+import { Grid } from '../core/Grid.js';
 
 const CONFIG = PLANTS.chomper;
 const BITE_INTERVAL = 30;  // 每30s攻击一次
@@ -48,7 +49,7 @@ export class Chomper extends Plant {
       if (!validIds.includes(z.id)) continue;
       if (z.row !== this.row) continue;
 
-      const zCol = Math.floor((z.x - 120) / 80);
+      const zCol = Math.floor((z.x - Grid.OFFSET_X) / Grid.CELL_W);
       if (zCol < this.col || zCol > maxCol) continue;
 
       if (z.x < bestX) {

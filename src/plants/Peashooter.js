@@ -10,17 +10,22 @@ export class Peashooter extends Plant {
 
   /**
    * @param {number} dt
-   * @param {import('../entities/Zombie.js').Zombie[]} zombiesInRow
-   * @returns {Projectile|null}
+   * @param {object|import('../entities/Zombie.js').Zombie[]} context
+   *   context 对象：{ zombies, addProjectile, ... }
+   *   或兼容旧接口：直接传入 zombiesInRow 数组
    */
-  update(dt, zombiesInRow) {
+  update(dt, context) {
     super.update(dt);
+    const zombiesInRow = context?.zombies
+      ? context.zombies.filter(z => z.row === this.row && z.isAlive())
+      : (Array.isArray(context) ? context : []);
+
     if (!zombiesInRow || zombiesInRow.length === 0) return null;
 
     this._shootTimer += dt;
     if (this._shootTimer >= PLANTS.peashooter.attackInterval) {
       this._shootTimer = 0;
-      return new Projectile({
+      const proj = new Projectile({
         type: 'pea',
         x: this.x + this.width / 2,
         y: this.y,
@@ -29,6 +34,8 @@ export class Peashooter extends Plant {
         speed: 400,
         emoji: '🟢',
       });
+      context?.addProjectile?.(proj);
+      return null;
     }
     return null;
   }

@@ -56,15 +56,27 @@
     });
 
     // 主渲染循环（菜单/胜败界面专用，游玩时由 Game 自己的 GameLoop 驱动）
+    let _menuLoopRunning = false;
+
     function menuLoop() {
-      if (screens.state !== SCREEN.PLAYING) {
-        screens.update(1 / 60);
-        renderer.clear();
-        screens.render();
-        requestAnimationFrame(menuLoop);
+      if (_menuLoopRunning) return; // 防重入：已有一个 RAF 链在运行
+      _menuLoopRunning = true;
+
+      if (screens.state === SCREEN.PLAYING) {
+        // 游玩中：Game 的 GameLoop 接管渲染，menuLoop 退出
+        // 当 Game 切回非 PLAYING 状态时，menuLoop 由 bus 事件重新启动
+        _menuLoopRunning = false;
+        return;
       }
-      // 游玩中：Game 的 GameLoop 接管渲染，menuLoop 退出
-      // 当 Game 切回非 PLAYING 状态时，menuLoop 由 bus 事件重新启动
+
+      screens.update(1 / 60);
+      renderer.clear();
+      screens.render();
+
+      requestAnimationFrame(() => {
+        _menuLoopRunning = false;
+        menuLoop();
+      });
     }
 
     // 监听 Game 结束事件，重新激活 menuLoop

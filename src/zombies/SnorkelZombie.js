@@ -1,5 +1,6 @@
 import { Zombie } from '../entities/Zombie.js';
 import { ZOMBIES } from '../data/zombies.js';
+import { Grid } from '../core/Grid.js';
 
 /**
  * 潜水僵尸（泳池专用）
@@ -9,8 +10,8 @@ export class SnorkelZombie extends Zombie {
   constructor(row, startX) {
     super(ZOMBIES.snorkel, row, startX);
     this._underwater = true;
-    // surfaceX = OFFSET_X + surfaceCol * CELL_W = 120 + 4 * 80 = 440
-    this._surfaceX = 120 + (ZOMBIES.snorkel.surfaceCol ?? 4) * 80;
+    // surfaceX = OFFSET_X + surfaceCol * CELL_W
+    this._surfaceX = Grid.OFFSET_X + (ZOMBIES.snorkel.surfaceCol ?? 4) * Grid.CELL_W;
   }
 
   // 潜水状态免疫所有攻击
