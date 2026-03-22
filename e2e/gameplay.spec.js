@@ -466,3 +466,48 @@ test('TC-15 浓雾场景第31关右侧有雾效', async ({ page }) => {
   const critical = errors.filter(e => !e.includes('favicon'));
   expect(critical, `JS 错误: ${critical.join(', ')}`).toHaveLength(0);
 });
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// TC-16: 屋顶场景（第41关）加载正常
+// ═══════════════════════════════════════════════════════════════════════════════
+test('TC-16 屋顶场景第41关加载正常', async ({ page }) => {
+  const errors = trackErrors(page);
+
+  await startGame(page, 41);
+  await page.waitForTimeout(2000);
+
+  await page.screenshot({ path: 'e2e/screenshots/tc16-roof-scene.png' });
+
+  // 屋顶场景背景是暖色调（米色/棕色），不是草绿色
+  const bgPixels = await getCanvasPixels(page, 250, 120, 300, 300);
+  // 检测暖色调：R较高，G中等，B较低
+  let warmPixels = 0;
+  for (let i = 0; i < bgPixels.length; i += 4) {
+    const r = bgPixels[i], g = bgPixels[i + 1], b = bgPixels[i + 2], a = bgPixels[i + 3];
+    if (a > 100 && r > 100 && r > g && r > b) warmPixels++;
+  }
+  expect(warmPixels, '屋顶场景应有砖红色格子').toBeGreaterThan(500);
+
+  const critical = errors.filter(e => !e.includes('favicon'));
+  expect(critical, `屋顶场景错误: ${critical.join(', ')}`).toHaveLength(0);
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// TC-17: favicon 不产生 404 错误
+// ═══════════════════════════════════════════════════════════════════════════════
+test('TC-17 favicon 正常加载无 404', async ({ page }) => {
+  const errors = [];
+  page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
+  page.on('response', resp => {
+    if (resp.url().includes('favicon') && resp.status() === 404) {
+      errors.push(`favicon 404: ${resp.url()}`);
+    }
+  });
+
+  await page.goto('http://localhost:8080');
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(500);
+
+  const faviconErrors = errors.filter(e => e.includes('favicon'));
+  expect(faviconErrors, 'favicon 不应产生 404').toHaveLength(0);
+});
