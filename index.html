@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plants vs Zombies</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    #gameCanvas {
+      display: block;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="800" height="600"></canvas>
+  <script type="module">
+    import { Renderer } from './src/core/Renderer.js';
+    import { Screens, SCREEN } from './src/ui/Screens.js';
+
+    const canvas = document.getElementById('gameCanvas');
+    const renderer = new Renderer(canvas);
+
+    let screens = null;
+    let game = null;
+
+    function startGame(levelId) {
+      // 动态 import Game 避免循环依赖
+      import('./src/core/Game.js').then(({ Game }) => {
+        if (game) game.destroy?.();
+        game = new Game(levelId, screens);
+        screens.setState(SCREEN.PLAYING);
+      });
+    }
+
+    screens = new Screens(renderer, startGame);
+
+    // 点击事件（游玩中交给 Game 处理，其他界面交给 Screens）
+    canvas.addEventListener('click', e => {
+      if (screens.state !== SCREEN.PLAYING) {
+        const rect = canvas.getBoundingClientRect();
+        screens.handleClick(e.clientX - rect.left, e.clientY - rect.top);
+      }
+    });
+
+    // 主渲染循环（菜单/胜败界面专用，游玩时由 Game 自己的 GameLoop 驱动）
+    function menuLoop() {
+      if (screens.state !== SCREEN.PLAYING) {
+        screens.update(1 / 60);
+        renderer.clear();
+        screens.render();
+        requestAnimationFrame(menuLoop);
+      }
+      // 游玩中：Game 的 GameLoop 接管渲染，menuLoop 退出
+      // 当 Game 切回非 PLAYING 状态时，menuLoop 由 bus 事件重新启动
+    }
+
+    // 监听 Game 结束事件，重新激活 menuLoop
+    import('./src/core/EventBus.js').then(({ bus }) => {
+      bus.on('game:quit',      () => { screens.setState(SCREEN.MAIN_MENU); menuLoop(); });
+      bus.on('game:win',       () => { screens.setState(SCREEN.WIN);       menuLoop(); });
+      bus.on('game:lose',      () => { screens.setState(SCREEN.LOSE);      menuLoop(); });
+      bus.on('game:restart',   () => { if (game) startGame(game.levelId); });
+      bus.on('game:nextLevel', () => { if (game) startGame(game.levelId + 1); });
+    });
+
+    // 启动菜单循环
+    menuLoop();
+  </script>
+</body>
+</html>

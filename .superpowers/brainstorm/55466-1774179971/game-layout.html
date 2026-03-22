@@ -1,0 +1,163 @@
+<h2>游戏界面布局设计</h2>
+<p class="subtitle">这是游戏的整体布局 Mockup，请确认是否符合预期</p>
+
+<div class="mockup" style="max-width:800px;margin:0 auto;">
+  <div class="mockup-header">植物大战僵尸 — 游戏界面</div>
+  <div class="mockup-body" style="padding:0;background:#2d5016;font-family:sans-serif;border-radius:0 0 8px 8px;overflow:hidden;">
+
+    <!-- Top HUD -->
+    <div style="background:#5d4037;padding:8px 12px;display:flex;align-items:center;gap:12px;border-bottom:3px solid #3e2723;">
+      <div style="background:#ffd700;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 6px rgba(0,0,0,0.4);">☀️</div>
+      <div style="background:#3e2723;color:#ffd700;font-weight:bold;padding:4px 12px;border-radius:12px;font-size:16px;min-width:60px;text-align:center;">150</div>
+
+      <!-- Plant cards -->
+      <div style="display:flex;gap:6px;margin-left:8px;">
+        <div style="background:#4caf50;border:2px solid #81c784;border-radius:6px;width:44px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;">
+          <div style="font-size:22px;">🌻</div>
+          <div style="font-size:9px;color:#e8f5e9;background:rgba(0,0,0,0.5);width:100%;text-align:center;">50</div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:#ffd700;border-radius:0 0 4px 4px;width:70%;"></div>
+        </div>
+        <div style="background:#4caf50;border:2px solid #81c784;border-radius:6px;width:44px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;">
+          <div style="font-size:22px;">🫛</div>
+          <div style="font-size:9px;color:#e8f5e9;background:rgba(0,0,0,0.5);width:100%;text-align:center;">100</div>
+        </div>
+        <div style="background:#4caf50;border:2px solid #81c784;border-radius:6px;width:44px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;">
+          <div style="font-size:22px;">🥜</div>
+          <div style="font-size:9px;color:#e8f5e9;background:rgba(0,0,0,0.5);width:100%;text-align:center;">50</div>
+        </div>
+        <div style="background:#4caf50;border:2px solid #81c784;border-radius:6px;width:44px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;">
+          <div style="font-size:22px;">🍒</div>
+          <div style="font-size:9px;color:#e8f5e9;background:rgba(0,0,0,0.5);width:100%;text-align:center;">150</div>
+        </div>
+        <div style="background:#4caf50;border:2px solid #81c784;border-radius:6px;width:44px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;">
+          <div style="font-size:22px;">❄️</div>
+          <div style="font-size:9px;color:#e8f5e9;background:rgba(0,0,0,0.5);width:100%;text-align:center;">175</div>
+        </div>
+        <div style="background:#555;border:2px solid #777;border-radius:6px;width:44px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0.6;">
+          <div style="font-size:22px;">💥</div>
+          <div style="font-size:9px;color:#ccc;background:rgba(0,0,0,0.5);width:100%;text-align:center;">125</div>
+        </div>
+        <div style="background:#555;border:2px solid #777;border-radius:6px;width:44px;height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0.6;">
+          <div style="font-size:22px;">🌸</div>
+          <div style="font-size:9px;color:#ccc;background:rgba(0,0,0,0.5);width:100%;text-align:center;">25</div>
+        </div>
+      </div>
+
+      <div style="flex:1;"></div>
+      <!-- Wave progress -->
+      <div style="text-align:right;">
+        <div style="color:#a5d6a7;font-size:11px;margin-bottom:3px;">波次进度</div>
+        <div style="background:#1b5e20;border-radius:8px;width:120px;height:10px;overflow:hidden;">
+          <div style="background:linear-gradient(90deg,#f44336,#ff9800);width:35%;height:100%;border-radius:8px;"></div>
+        </div>
+        <div style="color:#ef9a9a;font-size:11px;margin-top:3px;">🧟 第2波 / 共8波</div>
+      </div>
+      <div style="background:#8d6e63;border-radius:6px;padding:6px 10px;color:white;font-size:12px;cursor:pointer;">⏸ 暂停</div>
+    </div>
+
+    <!-- Game Grid -->
+    <div style="display:flex;background:#2d5016;">
+      <!-- Lawn area -->
+      <div style="flex:1;padding:8px 8px 8px 4px;">
+        <!-- Grid rows -->
+        <div style="display:grid;grid-template-rows:repeat(5,64px);gap:2px;">
+          <!-- Row 1 -->
+          <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;">
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🫛</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🫛</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🧟</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🧟</div>
+          </div>
+          <!-- Row 2 -->
+          <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;">
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:28px;">🥜</div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🫛</div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;border:1px dashed rgba(255,255,255,0.1);">🪖🧟</div>
+          </div>
+          <!-- Row 3 (center) -->
+          <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;">
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🫛</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🫛</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🥜</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🧟</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+          </div>
+          <!-- Row 4 -->
+          <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;">
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🫛</div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.08);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🧟</div>
+          </div>
+          <!-- Row 5 -->
+          <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;">
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🌻</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:28px;border:1px dashed rgba(255,255,255,0.1);">🫛</div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+            <div style="background:rgba(255,255,255,0.05);border-radius:4px;border:1px dashed rgba(255,255,255,0.1);"></div>
+          </div>
+        </div>
+        <!-- Projectiles hint -->
+        <div style="color:rgba(255,255,255,0.4);font-size:10px;text-align:center;margin-top:4px;">● = 豌豆子弹  ⭐ = 阳光</div>
+      </div>
+
+      <!-- Right side: zombie lane entrance -->
+      <div style="width:40px;background:rgba(0,0,0,0.3);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;">
+        <div style="color:#ef9a9a;font-size:10px;writing-mode:vertical-rl;">← 僵尸入口</div>
+      </div>
+    </div>
+
+    <!-- Bottom info bar -->
+    <div style="background:#3e2723;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="color:#a5d6a7;font-size:11px;">🌞 白天草坪 | 第1关 第3波</div>
+      <div style="color:#ffcc02;font-size:11px;">💡 点击卡片选择植物，再点击格子放置</div>
+      <div style="color:#ef9a9a;font-size:11px;">🏠 保护你的家！</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px;">
+  <h3>设计说明</h3>
+  <ul>
+    <li><strong>5×9 格子</strong>：5行（白天/夜晚）或 6行（泳池地图含2水路）×9列</li>
+    <li><strong>顶部 HUD</strong>：阳光数量、植物卡片（含冷却进度条）、波次进度、暂停</li>
+    <li><strong>Canvas 渲染</strong>：格子、植物、僵尸、子弹、阳光粒子均在 Canvas 上绘制</li>
+    <li><strong>僵尸从右侧入场</strong>，向左移动，植物子弹向右飞行</li>
+  </ul>
+</div>
+
+<div class="options" style="margin-top:16px;">
+  <div class="option" data-choice="approve" onclick="toggleSelect(this)">
+    <div class="letter">✅</div>
+    <div class="content"><h3>布局看起来不错，继续</h3><p>进入下一个设计章节：植物与僵尸列表</p></div>
+  </div>
+  <div class="option" data-choice="revise" onclick="toggleSelect(this)">
+    <div class="letter">✏️</div>
+    <div class="content"><h3>需要调整布局</h3><p>告诉我哪里需要修改</p></div>
+  </div>
+</div>

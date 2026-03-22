@@ -1,0 +1,56 @@
+<h2>游戏视觉风格</h2>
+<p class="subtitle">你希望这个植物大战僵尸网页游戏采用哪种视觉风格？</p>
+
+<div class="cards">
+  <div class="card" data-choice="pixel" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1a1a2e;padding:20px;display:flex;flex-direction:column;align-items:center;gap:8px;">
+      <div style="display:grid;grid-template-columns:repeat(8,20px);gap:2px;">
+        <div style="width:20px;height:20px;background:#4caf50;border-radius:2px;"></div>
+        <div style="width:20px;height:20px;background:#4caf50;border-radius:2px;"></div>
+        <div style="width:20px;height:20px;background:#8bc34a;border-radius:2px;"></div>
+        <div style="width:20px;height:20px;background:#2196f3;border-radius:2px;"></div>
+        <div style="width:20px;height:20px;background:#9c27b0;border-radius:2px;"></div>
+        <div style="width:20px;height:20px;background:#ff5722;border-radius:2px;"></div>
+        <div style="width:20px;height:20px;background:#607d8b;border-radius:2px;"></div>
+        <div style="width:20px;height:20px;background:#795548;border-radius:2px;"></div>
+      </div>
+      <div style="font-family:monospace;color:#4caf50;font-size:28px;letter-spacing:4px;font-weight:bold;">🌻  🧟</div>
+      <div style="display:flex;gap:4px;margin-top:8px;">
+        <div style="width:14px;height:14px;background:#4caf50;"></div>
+        <div style="width:14px;height:14px;background:#4caf50;"></div>
+        <div style="width:14px;height:14px;background:transparent;"></div>
+        <div style="width:14px;height:14px;background:#795548;"></div>
+        <div style="width:14px;height:14px;background:#795548;"></div>
+      </div>
+      <div style="color:#aaa;font-size:12px;margin-top:8px;font-family:monospace;">像素艺术风格</div>
+    </div>
+    <div class="card-body">
+      <h3>像素艺术风格</h3>
+      <p>复古像素画风，色块明显，有游戏机怀旧感。实现简单，文件小，性能好。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="cartoon" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:linear-gradient(180deg,#87ceeb 0%,#c8e6c9 60%,#8bc34a 100%);padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:140px;">
+      <div style="font-size:52px;line-height:1;filter:drop-shadow(2px 4px 4px rgba(0,0,0,0.3));">🌻</div>
+      <div style="font-size:40px;margin-top:10px;filter:drop-shadow(2px 4px 4px rgba(0,0,0,0.3));">🧟‍♂️</div>
+      <div style="color:#2d5016;font-size:12px;margin-top:10px;font-weight:bold;text-shadow:1px 1px 0 #fff;">卡通/Q版风格</div>
+    </div>
+    <div class="card-body">
+      <h3>卡通/Q版风格</h3>
+      <p>圆润可爱的卡通画风，接近原版PvZ风格。色彩鲜艳，角色有个性，适合休闲游戏。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="minimalist" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f5f5f5;padding:20px;display:flex;align-items:center;justify-content:center;gap:20px;min-height:140px;">
+      <div style="width:50px;height:60px;background:#4caf50;border-radius:50% 50% 10px 10px;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:18px;box-shadow:0 4px 8px rgba(0,0,0,0.15);">🌿</div>
+      <div style="width:40px;height:8px;background:#bbb;border-radius:4px;"></div>
+      <div style="width:45px;height:55px;background:#78909c;border-radius:10px 10px 0 0;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;box-shadow:0 4px 8px rgba(0,0,0,0.15);">💀</div>
+    </div>
+    <div class="card-body">
+      <h3>极简几何风格</h3>
+      <p>简洁的几何形状和平面设计，现代感强。实现快，视觉清晰，专注于游戏机制。</p>
+    </div>
+  </div>
+</div>
