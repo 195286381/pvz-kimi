@@ -9,9 +9,7 @@ import { CollisionSystem } from '../systems/CollisionSystem.js';
 import { ParticleSystem } from '../systems/ParticleSystem.js';
 import { HUD } from '../ui/HUD.js';
 import { SCREEN } from '../ui/Screens.js';
-// plant classes needed for dispatch logic
-import { Sunflower } from '../plants/Sunflower.js';
-import { CherryBomb } from '../plants/CherryBomb.js';
+import { SoundSystem } from '../systems/SoundSystem.js';
 // registries
 import { PLANT_REGISTRY } from '../plants/index.js';
 import { ZOMBIE_REGISTRY } from '../zombies/index.js';
@@ -39,6 +37,7 @@ export class Game {
     this.collisionSystem = new CollisionSystem();
     this.particles = new ParticleSystem();
     this.hud = new HUD(this._sceneType);
+    this.sound = new SoundSystem();
 
     this.plants = [];
     this.zombies = [];
@@ -92,12 +91,14 @@ export class Game {
   _setupEvents() {
     this._on('zombie:died', () => {
       this.waveSystem.onZombieKilled();
+      this.sound.playZombieDie();
     });
 
     this._on('game:over', () => {
       if (this._gameState !== 'playing') return;
       this._gameState = 'done';
       this.loop.stop();
+      this.sound.playLose();
       bus.emit('game:lose');
     });
 
@@ -113,9 +114,20 @@ export class Game {
       this.loop.start();
     });
 
+    // wave start sound
+    this._on('wave:start', () => {
+      this.sound.playWaveStart();
+    });
+
+    // sun collected sound
+    this._on('sun:collected', () => {
+      this.sound.playSunCollect();
+    });
+
     // PotatoMine area explosion
     this._on('plant:explosion', ({ row, col, damage, radius }) => {
       CollisionSystem.aoeZombies(col, row, radius, damage, this.zombies, this.particles);
+      this.sound.playExplosion();
     });
 
     // DoomShroom full-screen nuke
@@ -148,7 +160,12 @@ export class Game {
 
     // 1. HUD area
     if (this.hud.containsPoint(mx, my)) {
-      this.hud.handleClick(mx, my);
+      const result = this.hud.handleClick(mx, my);
+      if (result && result.action === 'pause') {
+        this._gameState = 'paused';
+        this.loop.stop();
+        this.screens?.setState(SCREEN.PAUSED);
+      }
       return;
     }
 
@@ -237,6 +254,7 @@ export class Game {
     this.sunSystem.spend(config.cost);
     this.hud.confirmPlacement(plantId);
     this.particles.spawnPlantPlace(plant.x, plant.y);
+    this.sound.playPlantPlace();
   }
 
   _spawnZombie(zombieId, row) {
@@ -261,6 +279,7 @@ export class Game {
       if (this._endTimer <= 0) {
         this._gameState = 'done';
         this.loop.stop();
+        this.sound.playWin();
         bus.emit('game:win');
       }
       return;
@@ -299,37 +318,25 @@ export class Game {
   }
 
   _updatePlants(dt) {
-    // Shared context for all context-pattern plants
     const context = {
       zombies: this.zombies,
       plants: this.plants,
       particles: this.particles,
       addProjectile: (p) => this.projectiles.push(p),
       sunSystem: this.sunSystem,
+      scene: this._sceneType,
     };
 
     const toRemove = [];
 
     for (const plant of this.plants) {
-      if (plant instanceof Sunflower) {
-        // Sunflower needs sunSystem directly to call spawnSunAt
-        plant.update(dt, this.sunSystem);
-
-      } else if (plant instanceof CherryBomb) {
-        // CherryBomb returns explosion event object
-        const result = plant.update(dt);
-        if (result && result.type === 'explosion') {
-          CollisionSystem.aoeZombies(
-            result.col, result.row, result.radius, result.damage,
-            this.zombies, this.particles
-          );
+      const result = plant.update(dt, context);
+      if (result) {
+        if (result.type === 'explosion') {
+          bus.emit('plant:explosion', result);
+        } else if (result.type === 'doom') {
+          bus.emit('plant:doomExplosion', result);
         }
-
-      } else {
-        // All other plants use the context pattern:
-        // Peashooter, SnowPea, Repeater, Chomper, FumeShroom, PotatoMine, PuffShroom,
-        // SunShroom, Magneshroom, Torchwood, DoomShroom, TallNut, Lilypad, FlowerPot
-        plant.update(dt, context);
       }
 
       if (plant.isDead()) toRemove.push(plant);

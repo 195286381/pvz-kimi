@@ -9,10 +9,11 @@ export class Sunflower extends Plant {
     this._animTimer = 0;
   }
 
-  /** @param {import('../systems/SunSystem.js').SunSystem} sunSystem */
-  update(dt, sunSystem) {
+  /** @param {number} dt @param {{ sunSystem: import('../systems/SunSystem.js').SunSystem }} context */
+  update(dt, context) {
     super.update(dt);
 
+    const sunSystem = context?.sunSystem ?? context;
     this._sunTimer += dt;
     if (this._sunTimer >= PLANTS.sunflower.sunInterval) {
       this._sunTimer = 0;

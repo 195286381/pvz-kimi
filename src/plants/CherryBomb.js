@@ -16,9 +16,10 @@ export class CherryBomb extends Plant {
 
   /**
    * @param {number} dt
+   * @param {object} [_context] - unused, accepted for uniform call signature
    * @returns {{ type:'explosion', row:number, col:number, damage:number, radius:number }|null}
    */
-  update(dt) {
+  update(dt, _context) {
     super.update(dt);
 
     if (this._exploded) {

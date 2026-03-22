@@ -38,6 +38,8 @@ export class HUD {
     this._scrollOffset   = 0;
     this._maxVisible     = MAX_VISIBLE;
     this._totalCards     = 0;
+    this._pauseBtnRect   = null;
+    this._hintTimer      = 3.0;
     this._initCards(sceneType);
   }
 
@@ -71,6 +73,7 @@ export class HUD {
     this._sunAmount = sunAmount;
     this._sunFlash  = sunAmount >= 9990 ? this._sunFlash + dt : 0;
     this.cards.forEach(c => c.update(dt));
+    if (this._hintTimer > 0) this._hintTimer -= dt;
   }
 
   render(renderer) {
@@ -127,6 +130,25 @@ export class HUD {
         align: 'center', baseline: 'middle', font: 'bold Arial',
       });
 
+    // ── Pause button (top-right, x=755, y=5, w=35, h=35) ────────
+    const btnX = 755, btnY = 5, btnW = 35, btnH = 35;
+    renderer.drawRoundRect(btnX, btnY, btnW, btnH, 6, 'rgba(0,0,0,0.4)');
+    renderer.drawText('⏸', btnX + btnW / 2, btnY + btnH / 2, {
+      size: 18, color: '#fff', align: 'center', baseline: 'middle',
+    });
+    this._pauseBtnRect = { x: btnX, y: btnY, w: btnW, h: btnH };
+
+    // ── Keyboard hint (fades out after 3s) ───────────────────────
+    if (this._hintTimer > 0) {
+      const alpha = Math.min(1, this._hintTimer);
+      renderer.setAlpha(alpha * 0.7);
+      renderer.drawRect(200, 88, 400, 16, 'rgba(0,0,0,0.8)');
+      renderer.drawText('按 ESC 暂停 | 右键取消选择', 400, 96, {
+        size: 11, color: '#aaa', align: 'center', baseline: 'middle',
+      });
+      renderer.resetAlpha();
+    }
+
     // ── Mouse-follow preview ──────────────────────────────────────
     if (this._previewPlant && this._mouseY > HUD_H) {
       const config = PLANTS[this._previewPlant];
@@ -140,6 +162,14 @@ export class HUD {
 
   handleClick(mx, my) {
     if (my > HUD_H) return null;
+
+    // Pause button (top-right)
+    if (this._pauseBtnRect) {
+      const { x, y, w, h } = this._pauseBtnRect;
+      if (mx >= x && mx <= x + w && my >= y && my <= y + h) {
+        return { action: 'pause' };
+      }
+    }
 
     // Left scroll arrow (first 15px)
     if (mx < 15 && this._scrollOffset > 0) {
