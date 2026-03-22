@@ -330,44 +330,50 @@ test('TC-12 游戏12秒后僵尸入场', async ({ page }) => {
 test('TC-13 波次进度条随时间推进', async ({ page }) => {
   const errors = trackErrors(page);
 
-  // 启动游戏
-  await startGame(page);
-
   // 进度条位置（Game.js _renderWaveProgress：x=700, y=5, w=90, h=14）
-  // 检测黄色（#FFD700）像素的宽度来判断进度
-  async function getProgressBarYellowWidth() {
+  // 检测黄色像素总数来判断进度条填充程度
+  // progress = (currentWave+1) / totalWaves，随波次递增
+  // 第1关有2波：初始progress=0（无黄色），第1波开始=0.5，第2波开始=1.0
+
+  async function getProgressBarYellowPixels() {
     return await page.locator('#gameCanvas').evaluate((canvas) => {
       const ctx = canvas.getContext('2d');
       const data = ctx.getImageData(700, 5, 90, 14).data;
-      let maxYellowX = 0;
+      let yellowPixels = 0;
       for (let i = 0; i < data.length; i += 4) {
         const r = data[i], g = data[i + 1], b = data[i + 2], a = data[i + 3];
         // 黄色 #FFD700：R=255, G=215, B=0
-        if (a > 100 && r > 200 && g > 180 && b < 50) {
-          const pixelIndex = Math.floor(i / 4);
-          const x = pixelIndex % 90;
-          if (x > maxYellowX) maxYellowX = x;
+        if (a > 100 && r > 200 && g > 170 && b < 60) {
+          yellowPixels++;
         }
       }
-      return maxYellowX;
+      return yellowPixels;
     });
   }
 
-  // 等待2秒，记录进度条初始宽度
-  await page.waitForTimeout(2000);
-  const progressWidth2s = await getProgressBarYellowWidth();
+  // 在游戏菜单直接进入（游戏还未开始，进度条为空）
+  await page.goto('http://localhost:8080');
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(500);
 
-  // 等待8秒
-  await page.waitForTimeout(8000);
+  // 先点击"开始游戏"触发游戏加载
+  await page.locator('#gameCanvas').click({ position: BTN_START });
+  await page.waitForTimeout(500); // 仅等0.5s，此时第一波还未开始（需要3s）
+
+  // 记录游戏刚开始时的进度条（第一波还未触发，progress应该为0）
+  const yellowBeforeWave = await getProgressBarYellowPixels();
+
+  // 等待4秒（等待第一波开始：开始后3s触发第一波）
+  await page.waitForTimeout(4000);
 
   // 截图保存
   await page.screenshot({ path: 'e2e/screenshots/tc13-wave-progress.png' });
 
-  // 记录进度条更新后宽度
-  const progressWidth10s = await getProgressBarYellowWidth();
+  // 记录第一波开始后进度条（progress=0.5，黄色区域应该占半）
+  const yellowAfterWave1 = await getProgressBarYellowPixels();
 
-  // 进度条应该增长（10s时黄色像素宽度应该大于2s时）
-  expect(progressWidth10s, `波次进度条应该随时间增长（2s宽：${progressWidth2s}px，10s宽：${progressWidth10s}px）`).toBeGreaterThan(progressWidth2s);
+  // 进度条应该增长（第一波开始后黄色像素增加）
+  expect(yellowAfterWave1, `波次进度条应该随时间推进（波前黄色像素：${yellowBeforeWave}，第1波后：${yellowAfterWave1}）`).toBeGreaterThan(yellowBeforeWave + 100);
 
   // 验证无 JS 错误
   const critical = errors.filter(e => !e.includes('favicon'));
